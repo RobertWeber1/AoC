@@ -12,7 +12,8 @@ FetchContent_MakeAvailable(Catch2)
 project(AoC2024)
 
 add_executable(${PROJECT_NAME}
-	src/day1.cc
+	# src/day1.cc
+	src/day2.cc
 )
 
 target_link_libraries(${PROJECT_NAME}

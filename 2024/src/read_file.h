@@ -1,6 +1,4 @@
-
-// #include <iostream>
-// #include <ranges>
+#pragma once
 #include <string>
 
 #include <errno.h>

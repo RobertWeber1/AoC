@@ -1,5 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <read_file.h>
+#include <utils.h>
 #include <iomanip>
 #include <iostream>
 #include <ranges>
@@ -10,18 +11,7 @@
 
 using namespace std::literals;
 
-int string_view_to_int(std::string_view input)
-{
-	int result{};
-	std::from_chars(input.data(), input.data()+ input.size(), result);
-	return result;
-}
 
-enum class Part
-{
-	one,
-	two
-};
 
 int day1func(MemoryMappedFile const& f, Part part)
 {
