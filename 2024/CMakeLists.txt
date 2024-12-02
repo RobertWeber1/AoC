@@ -9,6 +9,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
+FetchContent_Declare(
+  fmt
+  GIT_REPOSITORY https://github.com/fmtlib/fmt
+  GIT_TAG        e69e5f977d458f2650bb346dadf2ad30c5320281) # 10.2.1
+FetchContent_MakeAvailable(fmt)
+
 project(AoC2024)
 
 add_executable(${PROJECT_NAME}
@@ -20,6 +26,7 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE asan
 	PRIVATE ubsan
 	PRIVATE Catch2::Catch2WithMain
+	PRIVATE fmt::fmt
 )
 
 target_include_directories(${PROJECT_NAME}
