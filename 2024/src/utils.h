@@ -20,7 +20,7 @@ enum class Part
 	two
 };
 
-
+inline
 auto make_splitter(std::string_view && delimiter)
 {
 	return

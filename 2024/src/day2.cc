@@ -79,7 +79,7 @@ int count_safe_reports(std::string_view input, Part part)
 				});
 
 			auto safe = is_save_report(report);
-			count += safe;
+			count += int(safe);
 
 			if(not safe and part == Part::two)
 			{
@@ -90,7 +90,7 @@ int count_safe_reports(std::string_view input, Part part)
 					if(safe)
 						break;
 				}
-				count += safe;
+				count += int(safe);
 			}
 		});
 

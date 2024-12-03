@@ -15,11 +15,19 @@ FetchContent_Declare(
   GIT_TAG        e69e5f977d458f2650bb346dadf2ad30c5320281) # 10.2.1
 FetchContent_MakeAvailable(fmt)
 
+FetchContent_Declare(
+  ctre
+  GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
+  GIT_TAG        main)
+FetchContent_MakeAvailable(ctre)
+
+
 project(AoC2024)
 
 add_executable(${PROJECT_NAME}
-	# src/day1.cc
+	src/day1.cc
 	src/day2.cc
+	src/day3.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -27,6 +35,7 @@ target_link_libraries(${PROJECT_NAME}
 	PRIVATE ubsan
 	PRIVATE Catch2::Catch2WithMain
 	PRIVATE fmt::fmt
+	PRIVATE ctre::ctre
 )
 
 target_include_directories(${PROJECT_NAME}
