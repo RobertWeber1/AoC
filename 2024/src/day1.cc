@@ -89,14 +89,11 @@ int day1func(MemoryMappedFile const& f, Part part)
 }
 
 
+const MemoryMappedFile example(FileDescriptor("./input/day1/example.txt"));
+const MemoryMappedFile input(FileDescriptor("./input/day1/input.txt"));
 
 TEST_CASE("day 1")
 {
-	const MemoryMappedFile example(
-		FileDescriptor("/home/robert/workspace/AoC/2024/input/day1/example.txt"));
-	const MemoryMappedFile input(
-		FileDescriptor("/home/robert/workspace/AoC/2024/input/day1/input.txt"));
-
 	SECTION("part 1")
 	{
 		REQUIRE(day1func(example, Part::one) == 11);
