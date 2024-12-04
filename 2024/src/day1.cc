@@ -9,17 +9,18 @@
 #include <map>
 #include <algorithm>
 
+#include <day1/example.h>
+#include <day1/input.h>
+
 using namespace std::literals;
 
-
-
-int day1func(MemoryMappedFile const& f, Part part)
+constexpr int day1func(std::string_view const& input, Part part)
 {
-	std::map<int, std::vector<int>> numbers;
+	std::vector<int> numbers[2];
 
 	int index = 0;
 	for (auto && line :
-		f.get()
+		input
 		| std::ranges::views::split("\n"sv)
 		| std::ranges::views::transform(
 			[](auto && w)
@@ -84,29 +85,30 @@ int day1func(MemoryMappedFile const& f, Part part)
 		}
 	}
 
-
 	return 0;
 }
 
+constexpr int use_data(std::string_view const& data)
+{
+	std::vector<char> foo;
+	foo.resize(data.size());
 
-const MemoryMappedFile example(FileDescriptor("./input/day1/example.txt"));
-const MemoryMappedFile input(FileDescriptor("./input/day1/input.txt"));
+	return foo.capacity();
+}
+
+
 
 TEST_CASE("day 1")
 {
 	SECTION("part 1")
 	{
-		REQUIRE(day1func(example, Part::one) == 11);
-
-		REQUIRE(day1func(input, Part::one) == 1873376);
+		AOC_REQUIRE(day1func(day1::Example::data, Part::one) == 11);
+		AOC_REQUIRE(day1func(day1::Input::data, Part::one) == 1873376);
 	}
 
 	SECTION("part 2")
 	{
-		REQUIRE(day1func(example, Part::two) == 31);
-
-		REQUIRE(day1func(input, Part::two) == 18997088);
+		AOC_REQUIRE(day1func(day1::Example::data, Part::two) == 31);
+		AOC_REQUIRE(day1func(day1::Input::data, Part::two) == 18997088);
 	}
 }
-
-

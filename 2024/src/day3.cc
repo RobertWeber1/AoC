@@ -4,14 +4,12 @@
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 #include <ctre.hpp>
-#include <iostream>
 
-const MemoryMappedFile example(FileDescriptor("./input/day3/example.txt"));
-const MemoryMappedFile example2(FileDescriptor("./input/day3/example2.txt"));
-const MemoryMappedFile input(FileDescriptor("./input/day3/input.txt"));
+#include <day3/example.h>
+#include <day3/example2.h>
+#include <day3/input.h>
 
-
-int exec_mul(std::string_view && data)
+constexpr int exec_mul(std::string_view data)
 {
 	int sum = 0;
 	for (auto match :
@@ -27,7 +25,7 @@ int exec_mul(std::string_view && data)
 	return sum;
 }
 
-int exec_do_mul(std::string_view && data)
+constexpr int exec_do_mul(std::string_view data)
 {
 	int sum = 0;
 	bool do_mul = true;
@@ -62,13 +60,13 @@ TEST_CASE("day 3")
 {
 	SECTION("part 1")
 	{
-		REQUIRE(exec_mul(example.get()) == 161);
-		REQUIRE(exec_mul(input.get()) == 185797128);
+		AOC_REQUIRE(exec_mul(day3::Example::data) == 161);
+		AOC_REQUIRE(exec_mul(day3::Input::data) == 185797128);
 	}
 
 	SECTION("part 2")
 	{
-		REQUIRE(exec_do_mul(example2.get()) == 48);
-		REQUIRE(exec_do_mul(input.get()) == 89798695);
+		AOC_REQUIRE(exec_do_mul(day3::Example2::data) == 48);
+		AOC_REQUIRE(exec_do_mul(day3::Input::data) == 89798695);
 	}
 }

@@ -2,22 +2,19 @@
 #include <read_file.h>
 #include <utils.h>
 #include <iomanip>
-#include <iostream>
 #include <ranges>
 #include <string_view>
-#include <charconv>
-#include <map>
 #include <algorithm>
 #include <cmath>
 #include <vector>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 
-const MemoryMappedFile example(FileDescriptor("./input/day2/example.txt"));
-const MemoryMappedFile data(FileDescriptor("./input/day2/input.txt"));
+#include <day2/example.h>
+#include <day2/input.h>
 
 template<class Range>
-bool is_save_report(Range && report)
+constexpr bool is_save_report(Range && report)
 {
 	bool safe = true;
 	bool first = true;
@@ -54,14 +51,14 @@ bool is_save_report(Range && report)
 }
 
 
-std::vector<int> remove_element(std::vector<int> in, int i)
+constexpr std::vector<int> remove_element(std::vector<int> in, int i)
 {
 	in.erase(in.begin() + i, in.begin() + i + 1);
 	return in;
 }
 
 
-int count_safe_reports(std::string_view input, Part part)
+constexpr int count_safe_reports(std::string_view input, Part part)
 {
 	int count = 0;
 	for_each_line(
@@ -100,9 +97,15 @@ int count_safe_reports(std::string_view input, Part part)
 
 TEST_CASE("day 2")
 {
-	REQUIRE(count_safe_reports(example.get(), Part::one) == 2);
-	REQUIRE(count_safe_reports(data.get(), Part::one) == 463);
+	SECTION("part 1")
+	{
+		AOC_REQUIRE(count_safe_reports(day2::Example::data, Part::one) == 2);
+		AOC_REQUIRE(count_safe_reports(day2::Input::data, Part::one) == 463);
+	}
 
-	REQUIRE(count_safe_reports(example.get(), Part::two) == 4);
-	REQUIRE(count_safe_reports(data.get(), Part::two) == 514);
+	SECTION("part 2")
+	{
+		AOC_REQUIRE(count_safe_reports(day2::Example::data, Part::two) == 4);
+		AOC_REQUIRE(count_safe_reports(day2::Input::data, Part::two) == 514);
+	}
 }

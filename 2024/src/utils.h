@@ -6,8 +6,15 @@
 
 using namespace std::literals;
 
+#ifdef CALCULATE_RESULTS_AT_COMPILETIME
+	#define AOC_REQUIRE STATIC_REQUIRE
+#else
+	#define AOC_REQUIRE REQUIRE
+#endif
+
+
 inline
-int string_view_to_int(std::string_view input)
+constexpr int string_view_to_int(std::string_view input)
 {
 	int result{};
 	std::from_chars(input.data(), input.data()+ input.size(), result);
@@ -21,7 +28,7 @@ enum class Part
 };
 
 inline
-auto make_splitter(std::string_view && delimiter)
+constexpr auto make_splitter(std::string_view && delimiter)
 {
 	return
 		std::ranges::views::split(delimiter)
@@ -37,14 +44,14 @@ auto make_splitter(std::string_view && delimiter)
 }
 
 template<class Func>
-void for_each_line(std::string_view input, Func func)
+constexpr void for_each_line(std::string_view input, Func func)
 {
 	std::ranges::for_each(input | make_splitter("\n"sv), func);
 }
 
 
 template<class Func>
-void for_each_int(std::string_view input, Func func)
+constexpr void for_each_int(std::string_view input, Func func)
 {
 	std::ranges::for_each(
 		input

@@ -42,17 +42,23 @@ target_link_libraries(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
 	PRIVATE src
+	PRIVATE input
 )
+
+# target_compile_definitions(${PROJECT_NAME}
+# 	PRIVATE -DCALCULATE_RESULTS_AT_COMPILETIME=1
+# )
 
 target_compile_options(${PROJECT_NAME}
-	PRIVATE -fsanitize=undefined
-	PRIVATE -fsanitize=address
+	# PRIVATE -fsanitize=undefined
+	# PRIVATE -fsanitize=address
+	PRIVATE -fconstexpr-ops-limit=4290000000
 )
 
-target_link_options(${PROJECT_NAME}
-	PRIVATE -fsanitize=undefined
-	PRIVATE -fsanitize=address
-)
+# target_link_options(${PROJECT_NAME}
+	# PRIVATE -fsanitize=undefined
+	# PRIVATE -fsanitize=address
+# )
 
 target_compile_features(${PROJECT_NAME}
 	PRIVATE cxx_std_23
