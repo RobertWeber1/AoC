@@ -5,14 +5,14 @@ include(FetchContent)
 FetchContent_Declare(
 	Catch2
 	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-	GIT_TAG        v3.4.0 # or a later release
+	GIT_TAG        v3.4.0
 )
 FetchContent_MakeAvailable(Catch2)
 
 FetchContent_Declare(
   fmt
   GIT_REPOSITORY https://github.com/fmtlib/fmt
-  GIT_TAG        e69e5f977d458f2650bb346dadf2ad30c5320281) # 10.2.1
+  GIT_TAG        e69e5f977d458f2650bb346dadf2ad30c5320281)
 FetchContent_MakeAvailable(fmt)
 
 FetchContent_Declare(
@@ -21,6 +21,7 @@ FetchContent_Declare(
   GIT_TAG        main)
 FetchContent_MakeAvailable(ctre)
 
+#------------------------------------------------------------------------------#
 
 project(AoC2024)
 
@@ -28,6 +29,7 @@ add_executable(${PROJECT_NAME}
 	src/day1.cc
 	src/day2.cc
 	src/day3.cc
+	src/day4.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -55,8 +57,3 @@ target_link_options(${PROJECT_NAME}
 target_compile_features(${PROJECT_NAME}
 	PRIVATE cxx_std_23
 )
-
-
-# target_compile_options(${PROJECT_NAME}-test
-# 	PRIVATE -fcoroutines
-# )
