@@ -1,10 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
-#include <read_file.h>
 #include <utils.h>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
-#include <ctre.hpp>
-#include <iostream>
 #include <array>
 
 #include <day4/example.h>
@@ -15,7 +12,6 @@ struct Dimensions
 	int height;
 	int width;
 };
-
 
 constexpr Dimensions get_dimensions(std::string_view data)
 {

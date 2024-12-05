@@ -28,7 +28,7 @@ enum class Part
 };
 
 inline
-constexpr auto make_splitter(std::string_view && delimiter)
+constexpr auto make_splitter(std::string_view delimiter)
 {
 	return
 		std::ranges::views::split(delimiter)
@@ -51,11 +51,14 @@ constexpr void for_each_line(std::string_view input, Func func)
 
 
 template<class Func>
-constexpr void for_each_int(std::string_view input, Func func)
+constexpr void for_each_int(
+	std::string_view input,
+	std::string_view delimiter,
+	Func func)
 {
 	std::ranges::for_each(
 		input
-		| make_splitter(" "sv)
+		| make_splitter(delimiter)
 		| std::ranges::views::transform(string_view_to_int),
 		func);
 }
