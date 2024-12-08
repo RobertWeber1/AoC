@@ -14,9 +14,9 @@ using namespace std::literals;
 
 
 inline
-constexpr int string_view_to_int(std::string_view input)
+constexpr uint64_t string_view_to_int(std::string_view input)
 {
-	int result{};
+	uint64_t result{};
 	std::from_chars(input.data(), input.data()+ input.size(), result);
 	return result;
 }
