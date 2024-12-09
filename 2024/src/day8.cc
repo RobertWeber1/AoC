@@ -3,13 +3,14 @@
 #include <utils.h>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
+#include <fmt/ostream.h>
+#include <fmt/color.h>
 #include <ctre.hpp>
 #include <iostream>
 #include <vector>
 #include <utility>
 #include <functional>
 #include <map>
-#include <fmt/ostream.h>
 #include <set>
 
 #include <day8/example.h>
@@ -83,56 +84,65 @@ public:
 		return fmt::format_to(ctx.out(), "Distance({}, {})", dist.x, dist.y);
 	}
 };
+
+
 template<size_t N>
-bool collides(std::string_view const (&data)[N], Point node)
+bool is_out_of_bounds(std::string_view const (&data)[N], Point node, char tower)
 {
 
 	if((node.y < 0) or (node.y >= N))
 	{
-		fmt::println("    {} out of y-bounds", node);
 		return true;
 	}
 
 	if((node.x < 0) or (node.x >= data[node.y].size()))
 	{
-		fmt::println("    {} out of x-bounds", node);
-		return true;
-	}
-
-	if(data[node.y][node.x] != '.')
-	{
-		fmt::println("    collision @ {} with {}", node, data[node.y][node.x]);
 		return true;
 	}
 
 	return false;
 }
 
-bool already_present(std::vector<Point> const& nodes, Point const& node)
+void print_map(std::vector<std::vector<char>> const& data, char interest)
 {
-	for(auto const& n : nodes)
+	for(size_t y = 0; y < data.size(); ++y)
 	{
-		if(n == node)
+		for(size_t x = 0; x < data[y].size(); ++x)
 		{
-			return true;
+			char c = data[y][x];
+			if(c == '#')
+			{
+				fmt::print("{}", fmt::styled(c, fmt::bg(fmt::color::green)));
+			}
+			else if(c == interest)
+			{
+				fmt::print("{}", fmt::styled(c, fmt::bg(fmt::color::red)|fmt::fg(fmt::color::black)));
+			}
+			else
+			{
+				fmt::print("{}", c);
+			}
 		}
+		puts("");
 	}
-	return false;
 }
 
-int max_node_count(int i)
+int add_if_not_present(std::vector<std::vector<char>> & node_data, Point node)
 {
-	return i * (i-1);
+	if(node_data[node.y][node.x] != '#')
+	{
+		node_data[node.y][node.x] = '#';
+		return 1;
+	}
+	return 0;
 }
 
 template<size_t N>
 int count_anti_nodes(std::string_view const (&data)[N])
 {
-	int result = 0;
-	const size_t max_x = data[0].size()-1;
-	const size_t max_y = N-1;
-
 	std::map<char, std::vector<Point>> antenna_positions;
+	std::vector<std::vector<char>> node_data(
+		N, std::vector<char>(data[0].size(), '.'));
 
 	for(size_t y=0; y<N; ++y)
 	{
@@ -146,45 +156,82 @@ int count_anti_nodes(std::string_view const (&data)[N])
 		}
 	}
 
-	for(auto const& pair : antenna_positions)
-	{
-		fmt::println("{}: {}", pair.first, pair.second.size());
-	}
 	int total_count = 0;
-	std::vector<Point> nodes;
 	for(auto const& pair : antenna_positions)
 	{
-		fmt::println("----------{} * {} max_nodes: {}----------", pair.first, pair.second.size(), max_node_count(pair.second.size()));
 		auto const& positions = pair.second;
-		int local_count = 0;
+
 		for(int pivot = 0; pivot < positions.size()-1; ++pivot)
 		{
 			for(int i=pivot+1; i<positions.size(); ++i)
 			{
-				fmt::println("  {} - {}", positions[pivot], positions[i]);
-
-				Point node1 = positions[i]+(positions[pivot]-positions[i]);
-				if(not collides(data, node1))
+				Point node1 = positions[i] + (positions[pivot] - positions[i]);
+				if(not is_out_of_bounds(data, node1, pair.first))
 				{
-					fmt::println("    add node1 {}", node1);
-					++local_count;
-					++total_count;
+					total_count += add_if_not_present(node_data, node1);
 				}
 
-				Point node2 = positions[pivot] +(positions[i]-positions[pivot]);
-				if(not collides(data, node2))
+				Point node2 = positions[pivot] + (positions[i] - positions[pivot]);
+				if(not is_out_of_bounds(data, node2, pair.first))
 				{
-					fmt::println("    add node2 {}", node2);
-					++local_count;
-					++total_count;
+					total_count += add_if_not_present(node_data, node2);
 				}
 			}
-			puts("");
 		}
-		fmt::println("----------{}----------", local_count);
+	}
+	return total_count;
+}
+
+
+
+template<size_t N>
+int count_dense_anti_nodes(std::string_view const (&data)[N])
+{
+	std::map<char, std::vector<Point>> antenna_positions;
+	std::vector<std::vector<char>> node_data(
+		N, std::vector<char>(data[0].size(), '.'));
+
+	for(size_t y=0; y<N; ++y)
+	{
+		for(size_t x=0; x<data[y].size(); ++x)
+		{
+			char c = data[y][x];
+			if(c != '.')
+			{
+				antenna_positions[c].emplace_back(x,y);
+			}
+		}
 	}
 
-	fmt::println("total_count: {}", total_count);
+	int total_count = 0;
+	for(auto const& pair : antenna_positions)
+	{
+		auto const& positions = pair.second;
+
+		for(int pivot = 0; pivot < positions.size()-1; ++pivot)
+		{
+			for(int i=pivot+1; i<positions.size(); ++i)
+			{
+				Distance dist1 = positions[pivot] - positions[i];
+				Point node1 = positions[i] + dist1;
+				total_count += add_if_not_present(node_data, positions[i]);
+				while(not is_out_of_bounds(data, node1, pair.first))
+				{
+					total_count += add_if_not_present(node_data, node1);
+					node1 = node1 + dist1;
+				}
+
+				Distance dist2 = positions[i] - positions[pivot];
+				Point node2 = positions[pivot] + dist2;
+				total_count += add_if_not_present(node_data, positions[pivot]);
+				while(not is_out_of_bounds(data, node2, pair.first))
+				{
+					total_count += add_if_not_present(node_data, node2);
+					node2 = node2 + dist2;
+				}
+			}
+		}
+	}
 	return total_count;
 }
 
@@ -194,10 +241,12 @@ TEST_CASE("day 8")
 	SECTION("part 1")
 	{
 		REQUIRE(count_anti_nodes(day8::Example::data) == 14);
-		REQUIRE(count_anti_nodes(day8::Input::data) == 279);//  267);   //max value 474
+		REQUIRE(count_anti_nodes(day8::Input::data) == 280);
 	}
 
 	SECTION("part 2")
 	{
+		REQUIRE(count_dense_anti_nodes(day8::Example::data) == 34);
+		REQUIRE(count_dense_anti_nodes(day8::Input::data) == 958);
 	}
 }
