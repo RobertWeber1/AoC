@@ -13,78 +13,10 @@
 #include <map>
 #include <set>
 
+#include <point.h>
+
 #include <day8/example.h>
 #include <day8/input.h>
-
-struct Point
-{
-	int x;
-	int y;
-};
-
-struct Distance
-{
-	int x;
-	int y;
-};
-
-Distance operator-(Point const& lhs, Point const& rhs)
-{
-	return Distance{rhs.x-lhs.x, rhs.y-lhs.y};
-}
-
-Point operator+(Point const& lhs, Distance const& rhs)
-{
-	return Point{rhs.x+lhs.x, rhs.y+lhs.y};
-}
-
-Point operator-(Point const& lhs, Distance const& rhs)
-{
-	return Point{rhs.x-lhs.x, rhs.y-lhs.y};
-}
-
-bool operator==(Point const& lhs, Point const& rhs)
-{
-	return lhs.x==rhs.x and lhs.y==rhs.y;
-}
-
-bool operator<(Point const& lhs, Point const& rhs)
-{
-	return lhs.x<rhs.x and lhs.y<rhs.y;
-}
-
-template <>
-class fmt::formatter<Point>
-{
-public:
-	constexpr auto parse (format_parse_context& ctx)
-	{
-		return ctx.begin();
-	}
-
-	template <typename Context>
-	constexpr auto format (Point const& point, Context& ctx) const
-	{
-		return fmt::format_to(ctx.out(), "Point({}, {})", point.x, point.y);
-	}
-};
-
-template <>
-class fmt::formatter<Distance>
-{
-public:
-	constexpr auto parse (format_parse_context& ctx)
-	{
-		return ctx.begin();
-	}
-
-	template <typename Context>
-	constexpr auto format (Distance const& dist, Context& ctx) const
-	{
-		return fmt::format_to(ctx.out(), "Distance({}, {})", dist.x, dist.y);
-	}
-};
-
 
 template<size_t N>
 bool is_out_of_bounds(std::string_view const (&data)[N], Point node, char tower)
