@@ -109,12 +109,11 @@ void find_end(
 		{
 			if(point == current.pos)
 			{
-				// fmt::println("dupplicate end: {}", current.pos);
 				++trail.rating;
 				return;
 			}
 		}
-		// fmt::println("new end: {}", current.pos);
+
 		++trail.rating;
 		trail.end.push_back(current.pos);
 		return;
@@ -124,7 +123,6 @@ void find_end(
 
 	for(auto const& dir : dirs)
 	{
-		// fmt::println("    {} - {}", dir.height, dir.pos);
 		find_end(data, trail, dir);
 	}
 }
@@ -136,15 +134,11 @@ std::vector<Trail> find_paths(
 {
 	for(auto & trail : trails)
 	{
-		// fmt::println("start {}", trail.start);
-
 		find_end(data, trail, {'0', trail.start});
-		// fmt::println("-----------------{}----------------------\n", trail.end.size());
 	}
 
 	return trails;
 }
-
 
 
 int sum_scores(std::vector<Trail> const& trails)
@@ -159,7 +153,6 @@ int sum_scores(std::vector<Trail> const& trails)
 }
 
 
-
 int sum_ratings(std::vector<Trail> const& trails)
 {
 	return std::ranges::fold_left(
@@ -171,6 +164,11 @@ int sum_ratings(std::vector<Trail> const& trails)
 		});
 }
 
+template<class Func>
+int sum_up(std::vector<Trail> const& trails, Func func)
+{
+	return std::ranges::fold_left(trails, 0, func);
+}
 
 
 TEST_CASE("day 10")
@@ -178,10 +176,14 @@ TEST_CASE("day 10")
 	SECTION("part 1")
 	{
 		REQUIRE(
-			sum_scores(
+			sum_up(
 				find_paths(
 					day10::Example::data,
-					get_initial_trails(day10::Example::data)))
+					get_initial_trails(day10::Example::data)),
+				[](int sum, Trail const& t)
+				{
+					return sum + t.get_score();
+				})
 			== 36);
 
 		REQUIRE(

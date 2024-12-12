@@ -36,6 +36,7 @@ add_executable(${PROJECT_NAME}
 	src/day8.cc
 	src/day9.cc
 	src/day10.cc
+	src/day11.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
