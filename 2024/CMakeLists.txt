@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.14)
 
 include(FetchContent)
 
+SET(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+
 FetchContent_Declare(
 	Catch2
 	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
@@ -38,6 +40,7 @@ add_executable(${PROJECT_NAME}
 	src/day10.cc
 	# src/day11.cc
 	src/day12.cc
+	src/day13.cc
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -174,25 +174,28 @@ std::variant<uint64_t, std::pair<uint64_t, uint64_t>> blink(uint64_t in)
 template<class... Ts>
 struct overloads : Ts... { using Ts::operator()...; };
 
-std::vector<uint64_t> blink_all(std::vector<uint64_t> ints, std::set<std::pair<uint64_t, uint8_t>> &unique_numbers_gen, int count)
+std::vector<uint64_t> blink_all(
+	std::vector<uint64_t> ints,
+	//std::set<std::pair<uint64_t, uint8_t>> &unique_numbers_gen,
+	int count)
 {
 	std::vector<uint64_t> out;
 	out.reserve(ints.size()*1.5);
 
 	for(int i : ints)
 	{
-		unique_numbers_gen.insert(i, count);
-		std::visit(
-			overloads{
-				[&out](uint64_t v){
-					out.push_back(v);
-				},
-				[&out](std::pair<uint64_t, uint64_t> v){
-					out.push_back(v.first);
-					out.push_back(v.second);
-				}
-			},
-			blink(i));
+		// unique_numbers_gen.insert(i, count);
+		// std::visit(
+		// 	overloads{
+		// 		[&out](uint64_t v){
+		// 			out.push_back(v);
+		// 		},
+		// 		[&out](std::pair<uint64_t, uint64_t> v){
+		// 			out.push_back(v.first);
+		// 			out.push_back(v.second);
+		// 		}
+		// 	},
+		// 	blink(i));
 	}
 
 	return out;
@@ -203,12 +206,12 @@ uint64_t count_stones(std::string_view data, int count)
 	std::vector<uint64_t> ints;
 	for_each_int(data, " "sv, [&ints](uint64_t val){ints.push_back(val);});
 	fmt::println("in: {}", ints);
-	std::map<uint64_t, std::map<uint8_t, size_t>> unique_numbers_gen;
+	// std::map<uint64_t, std::map<uint8_t, size_t>> unique_numbers_gen;
 
 	for(int i = 0; i<count; ++i)
 	{
-		ints = blink_all(ints, unique_numbers_gen, count);
-		fmt::println("\n{}: unique_numbers[{}] {}", i+1, unique_numbers_gen.size(), unique_numbers_gen);
+		ints = blink_all(ints/*, unique_numbers_gen*/, count);
+		// fmt::println("\n{}: unique_numbers[{}] {}", i+1, unique_numbers_gen.size(), unique_numbers_gen);
 	}
 	return ints.size();
 }

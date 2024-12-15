@@ -1,17 +1,29 @@
 #pragma once
 #include <fmt/format.h>
-
+#include <chrono>
 
 struct Point
 {
-	int x;
-	int y;
+	int64_t x;
+	int64_t y;
 };
 
 struct Distance
 {
-	int x;
-	int y;
+	int64_t x;
+	int64_t y;
+};
+
+struct Velocity
+{
+	int64_t x;
+	int64_t y;
+};
+
+struct Size
+{
+	int64_t x;
+	int64_t y;
 };
 
 inline
@@ -44,6 +56,28 @@ bool operator<(Point const& lhs, Point const& rhs)
 	return lhs.x<rhs.x and lhs.y<rhs.y;
 }
 
+inline
+Distance operator*(Velocity v, std::chrono::seconds s)
+{
+	return Distance{v.x*s.count(), v.y*s.count()};
+}
+
+inline
+Point operator%(Point d, Size s)
+{
+	auto xmod = d.x%s.x;
+	auto ymod = d.y%s.y;
+
+	if(xmod < 0)
+		xmod = s.x+xmod;
+	if(ymod < 0)
+		ymod = s.y+ymod;
+
+	return Point{xmod, ymod};
+	//return Point{std::abs(xmod), std::abs(ymod)};
+}
+//----------------------------------------------------------------------------//
+
 template <>
 class fmt::formatter<Point>
 {
@@ -73,6 +107,22 @@ public:
 	constexpr auto format (Distance const& dist, Context& ctx) const
 	{
 		return fmt::format_to(ctx.out(), "Distance({}, {})", dist.x, dist.y);
+	}
+};
+
+template <>
+class fmt::formatter<Velocity>
+{
+public:
+	constexpr auto parse (format_parse_context& ctx)
+	{
+		return ctx.begin();
+	}
+
+	template <typename Context>
+	constexpr auto format (Velocity const& point, Context& ctx) const
+	{
+		return fmt::format_to(ctx.out(), "Velocity({}, {})", point.x, point.y);
 	}
 };
 
