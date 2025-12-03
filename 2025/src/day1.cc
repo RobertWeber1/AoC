@@ -97,11 +97,14 @@ uint64_t count_zeros_part_two(std::string const& name, uint64_t dial = 50)
 	return result;
 }
 
-TEST_CASE("day 1")
+TEST_CASE("day 1-1")
 {
 	REQUIRE(count_zeros_part_one("./input/day1/example.txt") == 3);
 	REQUIRE(count_zeros_part_one("./input/day1/input.txt") == 1168);
+}
 
+TEST_CASE("day 1-2")
+{
 	REQUIRE(count_zeros_part_two("./input/day1/example.txt") == 6);
 	REQUIRE(count_zeros_part_two("./input/day1/input.txt") == 7199);
 }

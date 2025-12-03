@@ -69,8 +69,8 @@ uint64_t sum_invalid_ids_part_1(std::string const& name)
 				continue;
 			}
 
-			auto upper = std::string_view(buffer, len/2);;
-			auto lower = std::string_view(buffer+len/2, len/2);
+			auto upper = std::string_view(buffer,         len/2);
+			auto lower = std::string_view(buffer + len/2, len/2);
 
 			if(upper == lower)
 			{
@@ -130,11 +130,14 @@ uint64_t sum_invalid_ids_part_2(std::string const& name)
 	return result;
 }
 
-TEST_CASE("day 2")
+TEST_CASE("day 2-1")
 {
 	REQUIRE(sum_invalid_ids_part_1("./input/day2/example.txt") == 1227775554);
 	REQUIRE(sum_invalid_ids_part_1("./input/day2/input.txt") == 13919717792);
+}
 
+TEST_CASE("day 2-2")
+{
 	REQUIRE(sum_invalid_ids_part_2("./input/day2/example.txt") == 4174379265);
 	REQUIRE(sum_invalid_ids_part_2("./input/day2/input.txt") == 14582313461);
 }
