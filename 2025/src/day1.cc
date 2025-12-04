@@ -1,7 +1,4 @@
 #include <catch2/catch_test_macros.hpp>
-#include <fmt/format.h>
-#include <fmt/ranges.h>
-#include "read_file.h"
 #include "utils.h"
 
 uint64_t count_zeros_part_one(std::string const& name, uint64_t dial = 50)

@@ -4,6 +4,11 @@
 #include <charconv>
 #include <algorithm>
 #include <point.h>
+#include <charconv>
+#include <fmt/format.h>
+#include <fmt/ranges.h>
+#include "read_file.h"
+#include "point.h"
 
 using namespace std::literals;
 
