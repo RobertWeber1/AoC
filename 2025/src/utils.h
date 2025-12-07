@@ -55,6 +55,19 @@ constexpr void for_each_line(std::string_view input, Func func, std::string_view
 	std::ranges::for_each(input | make_splitter(separator), func);
 }
 
+inline
+std::vector<std::string_view> get_lines(std::string_view input)
+{
+	std::vector<std::string_view> lines;
+	for_each_line(
+		input,
+		[&lines](std::string_view line){
+			lines.push_back(line);
+		});
+	return lines;
+}
+
+
 
 template<class Func>
 constexpr void for_each_int(

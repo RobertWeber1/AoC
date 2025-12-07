@@ -54,6 +54,7 @@ target_include_directories(${PROJECT_NAME}
 target_compile_options(${PROJECT_NAME}
 	# PRIVATE -fsanitize=undefined
 	# PRIVATE -fsanitize=address
+	PRIVATE -O3
 	PRIVATE -fconstexpr-ops-limit=4290000000
 )
 

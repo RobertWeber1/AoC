@@ -21,14 +21,18 @@ struct FileDescriptor
 	void operator=(FileDescriptor const &) = delete;
 	void operator=(FileDescriptor &&x) = delete;
 
-	FileDescriptor(std::string const& input)
-	: fd_(open(input.c_str(), O_RDONLY))
+	FileDescriptor(char const* input)
+	: fd_(open(input, O_RDONLY))
 	{
 		if(fd_ == -1)
 		{
 			THROW_SYSTEM_ERROR;
 		}
 	}
+
+	FileDescriptor(std::string const& input)
+	: FileDescriptor(input.c_str())
+	{}
 
 	~FileDescriptor()
 	{
