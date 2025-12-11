@@ -76,6 +76,29 @@ Point operator%(Point d, Size s)
 	return Point{xmod, ymod};
 	//return Point{std::abs(xmod), std::abs(ymod)};
 }
+
+//----------------------------------------------------------------------------//
+
+inline constexpr Distance left()
+{
+	return Distance(-1,  0);
+}
+
+inline constexpr Distance right()
+{
+	return Distance( 1,  0);
+}
+
+inline constexpr Distance up()
+{
+	return Distance( 0, -1);
+}
+
+inline constexpr Distance down()
+{
+	return Distance( 0,  1);
+}
+
 //----------------------------------------------------------------------------//
 
 template <>
