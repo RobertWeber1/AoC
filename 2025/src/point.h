@@ -14,6 +14,13 @@ struct Distance
 	int y;
 };
 
+struct Vector
+{
+	Point start;
+	Point end;
+};
+
+
 inline
 Distance operator-(Point const& lhs, Point const& rhs)
 {
@@ -42,6 +49,12 @@ inline
 bool operator<(Point const& lhs, Point const& rhs)
 {
 	return lhs.x<rhs.x and lhs.y<rhs.y;
+}
+
+inline
+Distance operator+(Distance const& lhs, Distance const& rhs)
+{
+	return Distance{rhs.x+lhs.x, rhs.y+lhs.y};
 }
 
 template <>
@@ -76,3 +89,13 @@ public:
 	}
 };
 
+inline
+Point to_point(std::vector<uint64_t> const& input)
+{
+	if(input.size() != 2)
+	{
+		throw "Input must contain eactly two values!";
+	}
+
+	return Point{static_cast<int>(input[0]), static_cast<int>(input[1])};
+}
